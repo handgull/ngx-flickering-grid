@@ -1,0 +1,8 @@
+<div class="om-flickering-grid" [ngClass]="styleClass">
+    <div class="om-flickering-grid-background" #OmFlickeringGridBackground>
+        <canvas class="om-flickering-grid-canvas" width="100" height="100" #OmFlickeringGridCanvas></canvas>
+    </div>
+    <div class="om-flickering-grid-content">
+        <ng-content></ng-content>
+    </div>
+</div>
