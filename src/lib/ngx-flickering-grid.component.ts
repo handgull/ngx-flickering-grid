@@ -1,36 +1,43 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from "@angular/core";
 
 @Component({
-  selector: 'om-flickering-grid',
+  selector: "om-flickering-grid",
   standalone: true,
   imports: [CommonModule],
   templateUrl: "./ngx-flickering-grid.component.html",
   styleUrl: "./ngx-flickering-grid.component.scss",
 })
 export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('OmFlickeringGridBackground')
+  @ViewChild("OmFlickeringGridBackground")
   background!: ElementRef<HTMLElement>;
 
-  @ViewChild('OmFlickeringGridCanvas')
+  @ViewChild("OmFlickeringGridCanvas")
   canvas!: ElementRef<HTMLCanvasElement>;
 
-  @Input('styleClass')
+  @Input("styleClass")
   styleClass?: string;
 
-  @Input('squareSize')
+  @Input("squareSize")
   squareSize = 4;
 
-  @Input('gridGap')
+  @Input("gridGap")
   gridGap = 6;
 
-  @Input('flickerChance')
+  @Input("flickerChance")
   flickerChance = 0.3;
 
-  @Input('color')
+  @Input("color")
   color = "#6B7280";
 
-  @Input('maxOpacity')
+  @Input("maxOpacity")
   maxOpacity = 0.3;
 
   private intersectionObserver?: IntersectionObserver;
@@ -39,10 +46,9 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
   private cols: number = 0;
   private rows: number = 0;
   private squares?: Float32Array;
-  private dpr = window.devicePixelRatio || 1;
   private lastAnimationTime: number = 0;
   private animationFrameId?: number;
-  private memoizedColor: string = 'rgba(0, 0, 0,';
+  private memoizedColor: string = "rgba(0, 0, 0,";
 
   private isInView = false;
   private animating = false;
@@ -51,8 +57,8 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
     this.initCanvas();
 
     this.intersectionObserver = new IntersectionObserver(([entry]) => {
-      this.renderContents(entry.isIntersecting)
-    })
+      this.renderContents(entry.isIntersecting);
+    });
     this.intersectionObserver.observe(this.canvas.nativeElement);
   }
 
@@ -73,7 +79,9 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
       this.isInView = true;
 
       if (!this.animating) {
-        this.animationFrameId = requestAnimationFrame((time) => this.animateCanvas(time));
+        this.animationFrameId = requestAnimationFrame((time) =>
+          this.animateCanvas(time)
+        );
       }
     } else if (!isIntersecting) {
       this.isInView = false;
@@ -87,7 +95,9 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
     window.addEventListener("resize", () => this.setCanvasSize());
 
     if (!this.animating) {
-      this.animationFrameId = requestAnimationFrame((time) => this.animateCanvas(time));
+      this.animationFrameId = requestAnimationFrame((time) =>
+        this.animateCanvas(time)
+      );
     }
   }
 
@@ -126,21 +136,31 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
 
     this.updateSquares(deltaTime);
     this.drawGrid();
-    this.animationFrameId = requestAnimationFrame((time) => this.animateCanvas(time));
+    this.animationFrameId = requestAnimationFrame((time) =>
+      this.animateCanvas(time)
+    );
   }
 
   setCanvasSize(): void {
-    this.canvas.nativeElement.width = this.background.nativeElement.getBoundingClientRect().width + 50;
-    this.canvas.nativeElement.height = this.background.nativeElement.getBoundingClientRect().height + 50;
+    this.canvas.nativeElement.width =
+      this.background.nativeElement.getBoundingClientRect().width + 50;
+    this.canvas.nativeElement.height =
+      this.background.nativeElement.getBoundingClientRect().height + 50;
 
     this.setupCanvas();
 
-    this.ctx = this.canvas.nativeElement.getContext("2d") as CanvasRenderingContext2D;
+    this.ctx = this.canvas.nativeElement.getContext(
+      "2d"
+    ) as CanvasRenderingContext2D;
   }
 
   setupCanvas(): void {
-    this.cols = Math.floor(this.canvas.nativeElement.width / (this.squareSize + this.gridGap));
-    this.rows = Math.floor(this.canvas.nativeElement.height / (this.squareSize + this.gridGap));
+    this.cols = Math.floor(
+      this.canvas.nativeElement.width / (this.squareSize + this.gridGap)
+    );
+    this.rows = Math.floor(
+      this.canvas.nativeElement.height / (this.squareSize + this.gridGap)
+    );
 
     this.squares = new Float32Array(this.cols * this.rows);
     for (let i = 0; i < this.squares.length; i++) {
@@ -165,9 +185,19 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    this.ctx.clearRect(
+      0,
+      0,
+      this.canvas.nativeElement.width,
+      this.canvas.nativeElement.height
+    );
     this.ctx.fillStyle = "transparent";
-    this.ctx.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    this.ctx.fillRect(
+      0,
+      0,
+      this.canvas.nativeElement.width,
+      this.canvas.nativeElement.height
+    );
 
     const [r, g, b] = this.ctx.getImageData(0, 0, 1, 1).data;
 
@@ -177,10 +207,10 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
 
         this.ctx.fillStyle = `${this.memoizedColor}${opacity})`;
         this.ctx.fillRect(
-          i * (this.squareSize + this.gridGap) * this.dpr,
-          j * (this.squareSize + this.gridGap) * this.dpr,
-          this.squareSize * this.dpr,
-          this.squareSize * this.dpr,
+          i * (this.squareSize + this.gridGap),
+          j * (this.squareSize + this.gridGap),
+          this.squareSize,
+          this.squareSize
         );
       }
     }
