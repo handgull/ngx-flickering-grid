@@ -1,12 +1,5 @@
-import { CommonModule } from "@angular/common";
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ViewChild,
-} from "@angular/core";
+import {CommonModule, isPlatformBrowser} from "@angular/common";
+import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, PLATFORM_ID, ViewChild,} from "@angular/core";
 
 @Component({
   selector: "om-flickering-grid",
@@ -53,13 +46,20 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
   private isInView = false;
   private animating = false;
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+  }
+
   ngAfterViewInit(): void {
     this.initCanvas();
 
-    this.intersectionObserver = new IntersectionObserver(([entry]) => {
-      this.renderContents(entry.isIntersecting);
-    });
-    this.intersectionObserver.observe(this.canvas.nativeElement);
+    if (isPlatformBrowser(this.platformId)) {
+      this.intersectionObserver = new IntersectionObserver(([entry]) => {
+        this.renderContents(entry.isIntersecting);
+      });
+      this.intersectionObserver.observe(this.canvas.nativeElement);
+    }
   }
 
   ngOnDestroy(): void {
