@@ -1,5 +1,13 @@
 # ngx-flickering-grid
 
+<a href="https://ngxui.com" target="_blank" style="display: flex;gap: .5rem;align-items: center;cursor: pointer; padding: 0 0 0 0; height: fit-content;">
+  <img src="https://ngxui.com/assets/img/ngxui-logo.png" style="width: 64px;height: 64px;">
+  <p style="font-weight: bold; padding: 0; margin: 0; font-size: 4rem">NGXUI</p>
+</a>
+
+This Library is part of the NGXUI ecosystem. <br>
+View all available components at https://ngxui.com
+
 `@omnedia/ngx-flickering-grid` is an Angular library that renders a dynamic flickering grid background with customizable square size, grid gaps, flicker behavior, and color. This component is perfect for adding a unique animated grid effect behind content in your Angular application.
 
 ## Features
@@ -21,21 +29,23 @@ npm install @omnedia/ngx-flickering-grid
 Import the `NgxFlickeringGridComponent` in your Angular module or component:
 
 ```typescript
-import { NgxFlickeringGridComponent } from '@omnedia/ngx-flickering-grid';
+import {NgxFlickeringGridComponent} from '@omnedia/ngx-flickering-grid';
 
 @Component({
   ...
-  imports: [
-    ...
-    NgxFlickeringGridComponent,
-  ],
+    imports:
+[
   ...
+    NgxFlickeringGridComponent,
+],
+...
 })
 ```
 
 Use the component in your template:
 
 ```html
+
 <om-flickering-grid
   [squareSize]="6"
   [gridGap]="8"
@@ -57,6 +67,7 @@ Use the component in your template:
 ## API
 
 ```html
+
 <om-flickering-grid
   [squareSize]="squareSize"
   [gridGap]="gridGap"
@@ -79,6 +90,7 @@ Use the component in your template:
 ## Example
 
 ```html
+
 <om-flickering-grid [squareSize]="8" [gridGap]="10" [flickerChance]="0.4" [color]="'#3498db'" [maxOpacity]="0.5">
   <div class="content">
     <p>Flickering Grid Background Content</p>
