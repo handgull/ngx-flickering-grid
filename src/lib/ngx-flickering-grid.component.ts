@@ -108,7 +108,9 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
     }
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", {
+      willReadFrequently: true,
+    });
 
     if (!ctx) {
       this.memoizedColor = `rgba(0, 0, 0,`;
@@ -149,9 +151,9 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
 
     this.setupCanvas();
 
-    this.ctx = this.canvas.nativeElement.getContext(
-      "2d"
-    ) as CanvasRenderingContext2D;
+    this.ctx = this.canvas.nativeElement.getContext("2d", {
+      willReadFrequently: true,
+    }) as CanvasRenderingContext2D;
   }
 
   setupCanvas(): void {
