@@ -145,9 +145,9 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
 
   setCanvasSize(): void {
     this.canvas.nativeElement.width =
-      this.background.nativeElement.getBoundingClientRect().width + 50;
+      this.background.nativeElement.getBoundingClientRect().width;
     this.canvas.nativeElement.height =
-      this.background.nativeElement.getBoundingClientRect().height + 50;
+      this.background.nativeElement.getBoundingClientRect().height;
 
     this.setupCanvas();
 
@@ -157,10 +157,10 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
   }
 
   setupCanvas(): void {
-    this.cols = Math.floor(
+    this.cols = Math.ceil(
       this.canvas.nativeElement.width / (this.squareSize + this.gridGap)
     );
-    this.rows = Math.floor(
+    this.rows = Math.ceil(
       this.canvas.nativeElement.height / (this.squareSize + this.gridGap)
     );
 
