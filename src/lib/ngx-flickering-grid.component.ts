@@ -1,5 +1,15 @@
 import {CommonModule, isPlatformBrowser} from "@angular/common";
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, PLATFORM_ID, ViewChild,} from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  PLATFORM_ID,
+  ViewChild,
+} from "@angular/core";
 
 @Component({
   selector: "om-flickering-grid",
@@ -7,6 +17,7 @@ import {AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, PLATFORM
   imports: [CommonModule],
   templateUrl: "./ngx-flickering-grid.component.html",
   styleUrl: "./ngx-flickering-grid.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
   @ViewChild("OmFlickeringGridBackground")
@@ -200,8 +211,6 @@ export class NgxFlickeringGridComponent implements AfterViewInit, OnDestroy {
       this.canvas.nativeElement.width,
       this.canvas.nativeElement.height
     );
-
-    const [r, g, b] = this.ctx.getImageData(0, 0, 1, 1).data;
 
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
